@@ -8,6 +8,7 @@ class FilmeAdmin(admin.ModelAdmin):
     list_display = 'id', 'titulo' ,'sinopse'
     list_display_links = 'id',
     ordering = "-pk",
+    prepopulated_fields = {"slug": ("titulo",)}
 
 
 @admin.register(models.Autor)

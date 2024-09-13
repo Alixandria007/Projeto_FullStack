@@ -1,6 +1,6 @@
 import './styles.css'
 
-export const Main_Content = ({children}) => {
+export const MainContent = ({children}) => {
     return (
       <div className="main-content">
           {children}

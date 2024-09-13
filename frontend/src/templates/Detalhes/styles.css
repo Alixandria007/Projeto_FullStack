@@ -1,0 +1,11 @@
+.detail-grid{
+    height: 100vh;
+    width: 90%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+}
+
+.detail-img{
+    height: 90vh
+}

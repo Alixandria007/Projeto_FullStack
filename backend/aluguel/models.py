@@ -14,6 +14,9 @@ class Aluguel(models.Model):
     vencimento = models.DateField()
     status = models.CharField(max_length=1, choices=[("V", "Vencido"), ("P", "Pendente"), ("D", "Devolvido")])
 
+    def __str__(self):
+        return f'Aluguel nº {self.pk}'
+
 
 class ItemAluguel(models.Model):
     class Meta: 
@@ -22,3 +25,6 @@ class ItemAluguel(models.Model):
 
     aluguel = models.ForeignKey(Aluguel, on_delete=models.CASCADE)
     filme = models.ForeignKey(Filme, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Produto do Aluguel nº {self.aluguel.pk}'

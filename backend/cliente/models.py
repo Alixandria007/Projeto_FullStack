@@ -11,3 +11,6 @@ class Cliente(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     cpf = models.PositiveIntegerField()
     telefone = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f'{self.usuario.first_name} {self.usuario.last_name}'
