@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\alixandre\Projetos\Projeto_FullStack\backend\venv
+set VIRTUAL_ENV=C:\Users\deusl\OneDrive\Desktop\Junior\Django Rest Fremework\Locadora_FullStack\backend\venv
 
 if not defined PROMPT set PROMPT=$P$G
 
