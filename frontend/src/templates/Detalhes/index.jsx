@@ -1,10 +1,61 @@
 import { useParams } from 'react-router-dom';
 import './styles.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
+import { GlobalContext } from '../../context/GlobalContext';
+import { carrinhoExists } from '../../context/GlobalContext/action';
 
 export const Detalhes = () => {
-    const [filme, setFilme] = useState(null);
+    const quantidade = useRef()
+    const context = useContext(GlobalContext)
+    const {GlobalDispatch} = context
+    const [ message, setMessage ] = useState(null)
+    const [ filme, setFilme ] = useState(null);
     const { slug } = useParams();
+
+    const Add_Carinho = (filme, quantidade) => {
+        let quant = parseInt(quantidade)
+        const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
+
+        const filmeExistente = carrinho.find(item => item.id === filme.id);
+
+        if (filmeExistente) {
+            if (filmeExistente.quantidade + quant > parseInt(filme.quantidade)){
+                setMessage("Não há essa quantidade em estoque!!")
+
+                setTimeout(() => {
+                    setMessage(null)
+                }, 3000);
+                return
+            }
+            
+            filmeExistente.quantidade += quant;
+        } 
+        
+        else {
+            const filme_object = {
+                titulo: filme.titulo,
+                sinopse: filme.sinopse,
+                categoria: filme.categoria.map((cat) => cat.nome),
+                autor: filme.autor.nome,
+                lancamento: filme.ano_lancamento,
+                quantidade: quant,
+                capa: filme.capa,
+                classificacao_etaria: filme.classificacao_etaria
+            }
+            
+            carrinho.push(filme_object);
+        }
+
+        sessionStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+        setMessage('Adicionado com sucesso!!')
+
+        setTimeout(() => {
+            setMessage(null)
+        }, 5000);
+
+        carrinhoExists(GlobalDispatch)
+    };
 
     useEffect(() => {
         const fetchFilme = async () => {
@@ -28,8 +79,8 @@ export const Detalhes = () => {
     }
 
     return (
-        <div className="detail-grid">
-            <div className="detail-img-wrapper">
+        <div className="detail-grid row">
+            <div className="detail-img-wrapper col-8">
                 {filme.capa ? (
                     <img src={`http://localhost:8000${filme.capa}`} className='detail-img'  alt={filme.titulo} />
                 ) : (
@@ -37,12 +88,48 @@ export const Detalhes = () => {
                 )}
             </div>
 
-            <div className="detail-body">
-                <h1>{filme.titulo}</h1>
-                <p><strong>Sinopse:</strong> {filme.sinopse}</p>
-                <p><strong>Categoria:</strong> {filme.categoria.map((categoria) => categoria.nome).join(",")}</p>
-                <p><strong>Autor:</strong> {filme.autor.nome}</p>
-                <p><strong>Classificação Etária:</strong> {filme.classificacao_etaria}</p>
+            <div className="detail-body col-4">
+                <h1 className='datail-title pb-3 text-center'>{filme.titulo}</h1>
+
+                <div className='datail-item pb-2'>
+                    <h6 className='detail-label'><strong>Sinopse:</strong></h6> 
+                    <p className='detail-text'>{filme.sinopse}</p>
+                </div>
+
+                <div className='datail-item pb-2'>
+                    <h6 className='detail-label'><strong>Lançamento:</strong></h6> 
+                    <p>{filme.ano_lancamento}</p>
+                </div>
+
+                <div className='datail-item pb-2'>
+                    <h6 className='detail-label'><strong>Categoria:</strong></h6> 
+                    <p>{filme.categoria.map((categoria) => categoria.nome).join(",")}</p>
+                </div>
+                
+                <div className='datail-item pb-2'>
+                    <h6 className='detail-label'><strong>Autor:</strong></h6> 
+                    <p>{filme.autor.nome}</p>
+                </div>
+                
+                <div className='datail-item pb-2'>
+                    <h6 className='detail-label'><strong>Classificação Etária:</strong> </h6> 
+                    <p>{filme.classificacao_etaria}</p>
+                </div>
+
+                <div className='datail-item pb-2'>
+                    <h6 className='detail-label'><strong>Estoque:</strong> </h6> 
+                    <p>{filme.quantidade}</p>
+                </div>
+                
+                <div class="pb-4">
+                    <label for="quantidade" class="form-label"><strong>Quantidade:</strong></label>
+                    <input ref={quantidade} type="number" min='0' max={filme.quantidade} class="form-quant form-control" id="quantidade" placeholder=""/>
+                </div>
+
+                <button onClick={() => Add_Carinho(filme, quantidade.current.value)} type="button" className='btn btn-primary'>Adicionar ao carrinho</button>
+                {message && 
+                    <p>{message}</p>
+                }
             </div>
         </div>
     );

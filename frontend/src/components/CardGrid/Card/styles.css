@@ -1,3 +1,26 @@
+.card{
+    height: 100%
+}
+
+.card:hover{
+    transform: scale(1.05);
+    transition: ease-in-out 300ms;
+}
+
+.card-image {
+    width: 100%; /* A imagem ocupa toda a largura do card */
+    height: 20rem; /* Defina uma altura fixa ou responsiva */
+    object-fit: cover; /* Ajusta a imagem para cobrir a área sem distorcer */
+  }
+  
+.link{
+    text-decoration: none;
+}
+
+.card-text{
+    font-size: 12px;
+}
+
 .card-img-top{
-    position: relative;
+    object-fit: cover;
 }

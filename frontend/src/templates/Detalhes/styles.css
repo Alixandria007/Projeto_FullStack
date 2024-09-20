@@ -1,11 +1,21 @@
 .detail-grid{
-    height: 100vh;
+    min-height: 100vh;
     width: 90%;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
+    padding: 20px 0;
 }
 
-.detail-img{
-    height: 90vh
+
+.detail-body p {
+    white-space: pre-wrap;
+}
+
+.form-label{
+    padding-right: 10px;
+}
+
+.form-quant{
+    display: inline;
+    width: 20%;
+    border-color: rgba(0, 0, 0, 0.253);
 }
