@@ -33,6 +33,7 @@ export const Detalhes = () => {
         
         else {
             const filme_object = {
+                id: filme.id,
                 titulo: filme.titulo,
                 sinopse: filme.sinopse,
                 categoria: filme.categoria.map((cat) => cat.nome),
@@ -53,7 +54,7 @@ export const Detalhes = () => {
         setTimeout(() => {
             setMessage(null)
         }, 5000);
-
+        
         carrinhoExists(GlobalDispatch)
     };
 
@@ -123,7 +124,7 @@ export const Detalhes = () => {
                 
                 <div class="pb-4">
                     <label for="quantidade" class="form-label"><strong>Quantidade:</strong></label>
-                    <input ref={quantidade} type="number" min='0' max={filme.quantidade} class="form-quant form-control" id="quantidade" placeholder=""/>
+                    <input ref={quantidade} type="number" min='1' value={'1'} max={filme.quantidade} class="form-quant form-control" id="quantidade" placeholder=""/>
                 </div>
 
                 <button onClick={() => Add_Carinho(filme, quantidade.current.value)} type="button" className='btn btn-primary'>Adicionar ao carrinho</button>
