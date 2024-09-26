@@ -3,6 +3,7 @@ import './styles.css';
 import { GlobalContext } from '../../context/GlobalContext';
 import { carrinhoExists } from '../../context/GlobalContext/action';
 import { useNavigate } from 'react-router-dom';
+import { Tabela } from '../../components/Tabela';
 
 export const Carrinho = () => {
     const navigate = useNavigate()
@@ -41,7 +42,42 @@ export const Carrinho = () => {
     
     return (
         <div className="carrinho-wrapper">
-            <table>
+            
+            <Tabela 
+                thead={<tr>
+                    <th>Capa</th>
+                    <th>Título</th>
+                    <th>Sinopse</th>
+                    <th>Quantidade</th>
+                    <th>Excluir</th>
+                </tr>}
+
+                tbody={carrinho.map((filme) => (
+                    <tr id={filme.id} key={filme.id}>
+                        <td><img src={`http://localhost:8000${filme.capa}`} alt={filme.titulo} /></td>
+                        <td>{filme.titulo}</td>
+                        <td>{filme.sinopse}</td>
+                        <td>{filme.quantidade}</td>
+                        <td><i onClick={(e) => excluirCarrinho(e.target.closest('tr'))} className="bi bi-x-circle-fill"></i></td>
+                    </tr>
+                    ))
+                }/>
+
+                
+
+            <div className="buttons-wrapper d-flex justify-content-between">
+                <p><strong>Dono do Carrinho:</strong> {
+                    GlobalState.dono_carrinho || <button className='btn btn-secondary'>Selecionar Dono do Carrinho</button>
+                }</p>
+                
+               <button className='btn btn-primary button'>Realizar Emprestimo</button>
+            </div>
+        </div>
+    );
+};
+
+
+/*<table>
                 <thead>
                     <tr>
                         <th>Capa</th>
@@ -63,11 +99,4 @@ export const Carrinho = () => {
                         </tr>
                     ))}
                 </tbody>
-            </table>
-
-            <div className="buttons-wrapper">
-               <button className='btn btn-primary button'>Realizar Emprestimo</button>
-            </div>
-        </div>
-    );
-};
+            </table>*/

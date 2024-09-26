@@ -1,3 +1,4 @@
 export const state = { 
-    carrinho: false
+    carrinho: false,
+    dono_carrinho: undefined
 }
