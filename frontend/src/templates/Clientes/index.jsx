@@ -25,6 +25,27 @@ export const Clientes = () => {
         
     }, [])
 
+
+    const insertDonoCarrinho = (cliente) => {
+        let carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || {
+            filmes: [],
+            dono_carrinho: null
+        };
+
+        const donocarrinho = {
+            id: cliente.id,
+            username: cliente.usuario.username,
+            nome: cliente.usuario.first_name,
+            sobrenome: cliente.usuario.last_name,
+            email: cliente.email,
+            telefone: cliente.telefone,
+            cpf: cliente.cpf
+        }
+
+        carrinho.dono_carrinho = donocarrinho
+        sessionStorage.setItem('carrinho', JSON.stringify(carrinho));
+    }
+
     return(
         <div className="clientes">
             {clientes.length > 0 ? (
@@ -42,13 +63,13 @@ export const Clientes = () => {
 
             tbody={
                 clientes.map((cliente) => (
-                    <tr>
+                    <tr key={cliente.id}>
                         <td><Link className='link'>{cliente.id}</Link></td>
                         <td><Link className='link'>{cliente.usuario.first_name} {cliente.usuario.last_name}</Link></td>
                         <td>{cliente.usuario.email}</td>
                         <td>{cliente.telefone}</td>
                         <td>...</td>
-                        <td><button className='btn btn-primary btn-sm'>Selecionar</button></td>
+                        <td><button className='btn btn-primary btn-sm' onClick={() => insertDonoCarrinho(cliente)}>Selecionar</button></td>
                     </tr>
                 ))
                 }

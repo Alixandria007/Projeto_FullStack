@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import './styles.css';
-import { Card } from '../../components/CardGrid/Card';
-import { CardGrid } from '../../components/CardGrid';
 import { Link } from 'react-router-dom';
 import { Tabela } from '../../components/Tabela';
 

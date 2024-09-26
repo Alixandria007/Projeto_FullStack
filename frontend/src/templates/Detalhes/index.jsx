@@ -14,9 +14,12 @@ export const Detalhes = () => {
 
     const Add_Carinho = (filme, quantidade) => {
         let quant = parseInt(quantidade)
-        const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
+        let carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || {
+            filmes: [],
+            dono_carrinho: null
+        };
 
-        const filmeExistente = carrinho.find(item => item.id === filme.id);
+        const filmeExistente = carrinho.filmes.find(item => item.id === filme.id);
 
         if (filmeExistente) {
             if (filmeExistente.quantidade + quant > parseInt(filme.quantidade)){
@@ -44,7 +47,7 @@ export const Detalhes = () => {
                 classificacao_etaria: filme.classificacao_etaria
             }
             
-            carrinho.push(filme_object);
+            carrinho.filmes.push(filme_object);
         }
 
         sessionStorage.setItem('carrinho', JSON.stringify(carrinho));
