@@ -16,3 +16,9 @@ def filme_detail(request, slug):
     filme = models.Filme.objects.filter(slug = slug).first()
     serializer = serializers.FilmesSerializer(instance = filme)
     return Response(serializer.data)
+
+@api_view()
+def categoria_list(request):
+    categoria = models.Categoria.objects.all()
+    serializer = serializers.CategoriaSerializer(instance = categoria, many = True)
+    return Response(serializer.data)

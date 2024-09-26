@@ -61,7 +61,7 @@ export const Detalhes = () => {
     useEffect(() => {
         const fetchFilme = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/filme/${slug}`);
+                const response = await fetch(`http://127.0.0.1:8000/filme/detail/${slug}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

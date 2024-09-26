@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 export const Links = () => {
     return (
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
@@ -7,7 +9,7 @@ export const Links = () => {
           </a>
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" href="#">Adicionar</a></li>
-            <li><a className="dropdown-item" href="#">Categorias</a></li>
+            <li><Link className="dropdown-item" to={'/categorias'}>Categorias</Link></li>
           </ul>
         </li>
 
@@ -17,7 +19,7 @@ export const Links = () => {
           </a>
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" href="#">Adicionar</a></li>
-            <li><a className="dropdown-item" href="#">Consultar</a></li>
+            <li><Link className="dropdown-item" to={'/clientes'}>Consultar</Link></li>
           </ul>
         </li>
 

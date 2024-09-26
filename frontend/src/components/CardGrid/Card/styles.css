@@ -3,14 +3,14 @@
 }
 
 .card:hover{
-    transform: scale(1.05);
+    transform: scale(1.02);
     transition: ease-in-out 300ms;
 }
 
 .card-image {
-    width: 100%; /* A imagem ocupa toda a largura do card */
-    height: 20rem; /* Defina uma altura fixa ou responsiva */
-    object-fit: cover; /* Ajusta a imagem para cobrir a área sem distorcer */
+    width: 100%; 
+    height: 20rem; 
+    object-fit: cover; 
   }
   
 .link{
