@@ -9,3 +9,13 @@ export const carrinhoExists = (dispatch) => {
         dispatch({type: 'carrinhoNotexists'})
     }
 }
+
+export const SetMessages = (dispatch, payload) => {
+    dispatch({type: 'setMessages', payload: payload})
+
+    setTimeout(() => {
+        dispatch({type: 'setMessagesNull'})
+    }, 2500);
+
+    
+}

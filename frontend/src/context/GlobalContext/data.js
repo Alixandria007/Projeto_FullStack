@@ -1,4 +1,5 @@
 export const state = { 
     carrinho: false,
-    dono_carrinho: undefined
+    messages: null,
+    messageType: null,
 }

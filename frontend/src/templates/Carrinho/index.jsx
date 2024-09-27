@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import './styles.css';
 import { GlobalContext } from '../../context/GlobalContext';
-import { carrinhoExists } from '../../context/GlobalContext/action';
+import { carrinhoExists, SetMessages } from '../../context/GlobalContext/action';
 import { useNavigate } from 'react-router-dom';
 import { Tabela } from '../../components/Tabela';
 
@@ -28,6 +28,7 @@ export const Carrinho = () => {
     
         if (carrinho.filmes.length == []) {
             sessionStorage.clear()
+            SetMessages(GlobalDispatch, {messages: 'Não há mais itens no carrinho!', messageType: 'error'})
             navigate('/')
         }
 

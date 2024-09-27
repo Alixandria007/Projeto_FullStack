@@ -2,13 +2,12 @@ import { useParams } from 'react-router-dom';
 import './styles.css';
 import { useState, useEffect, useRef, useContext } from 'react';
 import { GlobalContext } from '../../context/GlobalContext';
-import { carrinhoExists } from '../../context/GlobalContext/action';
+import { carrinhoExists, s, SetMessages } from '../../context/GlobalContext/action';
 
 export const Detalhes = () => {
     const quantidade = useRef()
     const context = useContext(GlobalContext)
     const {GlobalDispatch} = context
-    const [ message, setMessage ] = useState(null)
     const [ filme, setFilme ] = useState(null);
     const { slug } = useParams();
 
@@ -23,11 +22,7 @@ export const Detalhes = () => {
 
         if (filmeExistente) {
             if (filmeExistente.quantidade + quant > parseInt(filme.quantidade)){
-                setMessage("Não há essa quantidade em estoque!!")
-
-                setTimeout(() => {
-                    setMessage(null)
-                }, 3000);
+                SetMessages(GlobalDispatch, {messages: 'Não há essa quantidade em estoque!!', messageType: 'warning'} )
                 return
             }
             
@@ -52,11 +47,7 @@ export const Detalhes = () => {
 
         sessionStorage.setItem('carrinho', JSON.stringify(carrinho));
 
-        setMessage('Adicionado com sucesso!!')
-
-        setTimeout(() => {
-            setMessage(null)
-        }, 5000);
+        SetMessages(GlobalDispatch, {messages: 'Adicionado com sucesso!!', messageType: 'success'} )
         
         carrinhoExists(GlobalDispatch)
     };
@@ -131,9 +122,6 @@ export const Detalhes = () => {
                 </div>
 
                 <button onClick={() => Add_Carinho(filme, quantidade.current.value)} type="button" className='btn btn-primary'>Adicionar ao carrinho</button>
-                {message && 
-                    <p>{message}</p>
-                }
             </div>
         </div>
     );
