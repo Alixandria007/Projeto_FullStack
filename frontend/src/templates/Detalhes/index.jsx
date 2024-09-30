@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import './styles.css';
 import { useState, useEffect, useRef, useContext } from 'react';
 import { GlobalContext } from '../../context/GlobalContext';
-import { carrinhoExists, s, SetMessages } from '../../context/GlobalContext/action';
+import { carrinhoExists, SetMessages } from '../../context/GlobalContext/action';
 
 export const Detalhes = () => {
     const quantidade = useRef()
@@ -39,7 +39,7 @@ export const Detalhes = () => {
                 lancamento: filme.ano_lancamento,
                 quantidade: quant,
                 capa: filme.capa,
-                classificacao_etaria: filme.classificacao_etaria
+                classificacao_etaria: filme.classificacao_etaria,
             }
             
             carrinho.filmes.push(filme_object);

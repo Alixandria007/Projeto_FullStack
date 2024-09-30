@@ -1,0 +1,60 @@
+import { Link } from 'react-router-dom'
+import { Tabela } from '../../components/Tabela'
+import './styles.css'
+import { useEffect, useState } from 'react'
+
+export const Alugueis = () => {
+    const [alugueis, setAlugueis] = useState([])
+
+    useEffect( () => {
+        const AlugueisApi = async () => {
+            try{
+            const response = await fetch('http://127.0.0.1:8000/aluguel/aluguel_list/')
+            const data = await response.json()
+
+            setAlugueis(data)
+        }
+
+            catch (error){
+                console.error('Erro ao buscar dados:', error);
+            }
+        }    
+
+        AlugueisApi()
+        
+    }, [])
+
+    return(
+        <div className="alugueis">
+        {alugueis.length > 0 ? (
+        <Tabela
+        thead={
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Data</th>
+                <th>Vencimento</th>
+                <th>Status</th>               
+                <th>Ação</th>
+            </tr>
+        }
+
+        tbody={
+            alugueis.map((aluguel) => (
+                <tr>
+                    <td><Link className='link'> Aluguel nº{aluguel.id}</Link></td>
+                    <td><p>{aluguel.cliente}</p></td>
+                    <td><p>{aluguel.data_aluguel}</p></td>
+                    <td><p>{aluguel.vencimento}</p></td>
+                    <td><p>{aluguel.status}</p></td>
+                    <td><button className='btn btn-primary btn-sm'>Devolvido</button></td>
+                </tr>
+            ))
+            }
+        />
+    ) : (
+        <p>Carregando categorias...</p>
+    )}
+    </div>
+    )
+}

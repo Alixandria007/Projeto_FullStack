@@ -25,6 +25,7 @@ class ItemAluguel(models.Model):
 
     aluguel = models.ForeignKey(Aluguel, on_delete=models.CASCADE)
     filme = models.ForeignKey(Filme, on_delete=models.CASCADE)
+    quantidade = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return f'Produto do Aluguel nº {self.aluguel.pk}'

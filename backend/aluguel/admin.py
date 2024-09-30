@@ -5,7 +5,7 @@ from . import models
 
 @admin.register(models.Aluguel)
 class AluguelAdmin(admin.ModelAdmin):
-    list_display = 'id', 'cliente' ,'data_aluguel', 'vencimento', 'status'
+    list_display = 'id', 'cliente', 'vencimento', 'status'
     list_display_links = 'id',
     ordering = "-pk",
 

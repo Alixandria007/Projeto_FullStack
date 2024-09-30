@@ -28,7 +28,7 @@ export const Links = () => {
             Alugueis
           </a>
           <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="#">Consultar</a></li>
+            <li><Link to={'/alugueis'} className="dropdown-item" href="#">Consultar</Link></li>
             <li><a className="dropdown-item" href="#">Atrasos</a></li>
           </ul>
         </li>

@@ -1,10 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Tabela } from '../../components/Tabela'
 import './styles.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { SetMessages } from '../../context/GlobalContext/action'
+import { GlobalContext } from '../../context/GlobalContext'
 
 export const Clientes = () => {
+    const navigate = useNavigate()
     const [clientes, setClientes] = useState([])
+    const context = useContext(GlobalContext)
+    const {GlobalDispatch} = context
 
     useEffect( () => {
         const ClientesApi = async () => {
@@ -37,13 +42,15 @@ export const Clientes = () => {
             username: cliente.usuario.username,
             nome: cliente.usuario.first_name,
             sobrenome: cliente.usuario.last_name,
-            email: cliente.email,
+            email: cliente.usuario.email,
             telefone: cliente.telefone,
             cpf: cliente.cpf
         }
 
         carrinho.dono_carrinho = donocarrinho
         sessionStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+        SetMessages(GlobalDispatch, {messages: `${cliente.usuario.username} Adicionado como Dono do Carrinho`, messageType: 'success'})
     }
 
     return(
