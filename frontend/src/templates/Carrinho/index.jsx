@@ -36,7 +36,28 @@ export const Carrinho = () => {
     };
     
     return (
-        <div className="carrinho-wrapper">
+        <>
+        {
+            carrinho.dono_carrinho && 
+            <div className="box cliente-wrapper mb-3">
+                <h3 className="text-center cliente-title">Informações do Cliente</h3>
+                <p><strong>ID:</strong> {carrinho.dono_carrinho.id}</p>
+                <div className='row'>
+                    <p className='col'><strong>Nome Completo:</strong> {`${carrinho.dono_carrinho.nome} ${carrinho.dono_carrinho.sobrenome}`}</p>
+                    <p className='col'><strong>Username:</strong> {carrinho.dono_carrinho.username}</p>
+                </div>
+                
+                <div className='row'>
+                    <p className='col'><strong>CPF:</strong> {carrinho.dono_carrinho.cpf}</p>
+                    <p className='col'><strong>Telefone:</strong> {carrinho.dono_carrinho.telefone}</p>
+                </div>
+                
+                
+            </div>
+
+        }
+
+        <div className="box carrinho-wrapper">
             
             <Tabela 
                 thead={<tr>
@@ -60,12 +81,13 @@ export const Carrinho = () => {
 
                 
             <div className="buttons-wrapper d-flex justify-content-between">
-                <p><strong>Dono do Carrinho:</strong> { carrinho.dono_carrinho ?
-                    <p>{carrinho.dono_carrinho.nome}</p>: <button className='btn btn-secondary'>Selecionar Dono do Carrinho</button>
-                }</p>
+                { carrinho.dono_carrinho ?
+                    <button className='btn btn-secondary'>Trocar Proprietario</button>: <button className='btn btn-secondary'>Selecionar Propietario</button>
+                }
                 
-               <button className='btn btn-primary button'>Realizar Emprestimo</button>
+               <button className='btn btn-primary'>Realizar Emprestimo</button>
             </div>
         </div>
+        </>
     );
 };

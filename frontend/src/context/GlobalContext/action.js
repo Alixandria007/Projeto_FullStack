@@ -15,7 +15,7 @@ export const SetMessages = (dispatch, payload) => {
 
     setTimeout(() => {
         dispatch({type: 'setMessagesNull'})
-    }, 2500);
+    }, 1250);
 
     
 }
