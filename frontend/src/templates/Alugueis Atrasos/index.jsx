@@ -3,13 +3,13 @@ import { Tabela } from '../../components/Tabela'
 import './styles.css'
 import { useEffect, useState } from 'react'
 
-export const Alugueis = () => {
+export const AlugueisAtrasos = () => {
     const [alugueis, setAlugueis] = useState([])
 
     useEffect( () => {
         const AlugueisApi = async () => {
             try{
-            const response = await fetch('http://127.0.0.1:8000/aluguel/aluguel_list/')
+            const response = await fetch('http://127.0.0.1:8000/aluguel/aluguel_list/atrasos/')
             const data = await response.json()
 
             setAlugueis(data)
@@ -53,7 +53,7 @@ export const Alugueis = () => {
             }
         />
     ) : (
-        <p>Carregando categorias...</p>
+        <p>Não há alugueis atrasados...</p>
     )}
     </div>
     )

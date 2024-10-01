@@ -8,7 +8,7 @@ export const Links = () => {
             Filmes
           </a>
           <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="#">Adicionar</a></li>
+            <li><Link className="dropdown-item" to={'/filmes/adicionar/'}>Adicionar</Link></li>
             <li><Link className="dropdown-item" to={'/categorias'}>Categorias</Link></li>
           </ul>
         </li>
@@ -29,7 +29,7 @@ export const Links = () => {
           </a>
           <ul className="dropdown-menu">
             <li><Link to={'/alugueis'} className="dropdown-item" href="#">Consultar</Link></li>
-            <li><a className="dropdown-item" href="#">Atrasos</a></li>
+            <li><Link to={'/alugueis/atrasos'} className="dropdown-item" href="#">Atrasos</Link></li>
           </ul>
         </li>
       </ul>

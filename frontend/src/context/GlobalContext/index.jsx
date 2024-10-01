@@ -1,6 +1,7 @@
 import { createContext, useReducer } from "react"; 
 import { reducer } from "./reducer";
 import { state } from "./data";
+import { useEffect } from "react";
 
 export const GlobalContext = createContext()
 

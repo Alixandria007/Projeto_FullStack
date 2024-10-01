@@ -28,6 +28,13 @@ def create_aluguel(request):
 @api_view(['GET'])
 def aluguel_list(request):
     model = models.Aluguel.objects.all()
-    serializer = serializers.AluguelSerializer(instance = model, many = True)
+    serializer = serializers.AluguelSerializerGet(instance = model, many = True)
+    
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def aluguel_list_atrasos(request):
+    model = models.Aluguel.objects.filter(status = 'A')
+    serializer = serializers.AluguelSerializerGet(instance = model, many = True)
     
     return Response(serializer.data)
