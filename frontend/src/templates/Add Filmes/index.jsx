@@ -44,7 +44,7 @@ export const AddFilmes = () => {
     formData.append('titulo', titulo);
     formData.append('sinopse', sinopse);
     formData.append('ano_lancamento', anoLancamento);
-    formData.append('categoria', selectedCategorias);
+    formData.append('categoria', JSON.stringify(selectedCategorias));
     formData.append('autor', autor);
     formData.append('classificacao_etaria', classificacaoEtaria);
     formData.append('quantidade', quantidade);
@@ -55,13 +55,16 @@ export const AddFilmes = () => {
       const response = await fetch('http://127.0.0.1:8000/filme/', {
         method: 'POST',
         body: formData,
-      }).then(response => response.json()).catch(error => console.error(error));
+      })
 
       if (response.ok){
+        const jsonResponse = await response.json();
         SetMessages(GlobalDispatch,{messages:'Filme adicionado com sucesso.', messageType: 'success'});
         navigate('/')}
         
         else{
+        const errorResponse = await response.json();
+        console.error("Erro na resposta do servidor: ", errorResponse);
         SetMessages(GlobalDispatch,{messages:'Erro ao adicionar filme.', messageType: 'error'});
       }
       }
@@ -119,9 +122,10 @@ export const AddFilmes = () => {
               className="form-control"
               multiple
               value={selectedCategorias}
-              onChange={(e) =>
-                setSelectedCategorias([...e.target.selectedOptions].map((option) => option.value))
-              }
+              onChange={(e) => {
+                const selectedOptions = Array.from(e.target.value).map(option => option.value);
+                setSelectedCategorias(selectedOptions);
+              }}
               required
             >
               {categorias.map((categoria) => (
@@ -148,7 +152,7 @@ export const AddFilmes = () => {
                 </option>
               ))}
             </select>
-          </div>
+          </div> 
   
           <div className="form-group">
             <label htmlFor="classificacaoEtaria">Classificação Etária:</label>
@@ -201,7 +205,7 @@ export const AddFilmes = () => {
           </div>
   
           <button type="submit" className="btn btn-primary btn-block mt-4">
-            Adicionar Filme
+            anailson
           </button>
         </form>
       </div>

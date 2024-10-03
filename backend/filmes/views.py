@@ -22,7 +22,7 @@ def filme_api(request):
         
         mutable_data['capa'] = request.FILES.get('capa')
         serializer = serializers.FilmesSerializerPost(data = mutable_data)
-        
+        print(mutable_data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
