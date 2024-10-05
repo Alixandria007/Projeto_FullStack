@@ -24,7 +24,7 @@ class FilmesSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class FilmesSerializerPost(serializers.ModelSerializer):
-    
+
     class Meta:
         model = models.Filme
         fields = "__all__"
@@ -58,7 +58,6 @@ class FilmesSerializerPost(serializers.ModelSerializer):
         original_slug = slug
         counter = 1
 
-        # Verifica se a slug já existe
         while self.Meta.model.objects.filter(slug=slug).exists() and (instance is None or slug != instance.slug):
             slug = f"{original_slug}-{counter}"
             counter += 1

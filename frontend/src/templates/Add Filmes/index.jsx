@@ -18,7 +18,6 @@ export const AddFilmes = () => {
   const [classificacaoEtaria, setClassificacaoEtaria] = useState('10');
   const [capa, setCapa] = useState(null);
   const [quantidade, setQuantidade] = useState(1);
-  const [publico, setPublico] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,11 +43,12 @@ export const AddFilmes = () => {
     formData.append('titulo', titulo);
     formData.append('sinopse', sinopse);
     formData.append('ano_lancamento', anoLancamento);
-    formData.append('categoria', JSON.stringify(selectedCategorias));
+    categorias.forEach(categoria => {
+      formData.append('categoria', JSON.stringify(categoria.id));
+  });
     formData.append('autor', autor);
     formData.append('classificacao_etaria', classificacaoEtaria);
     formData.append('quantidade', quantidade);
-    formData.append('publico', publico);
     formData.append('capa', capa);
 
     try {
@@ -58,6 +58,7 @@ export const AddFilmes = () => {
       })
 
       if (response.ok){
+        console.log('passei')
         const jsonResponse = await response.json();
         SetMessages(GlobalDispatch,{messages:'Filme adicionado com sucesso.', messageType: 'success'});
         navigate('/')}
@@ -76,7 +77,7 @@ export const AddFilmes = () => {
   };
 
   return (
-      <div className="box my-5">
+      <div className="box-form my-5">
         <h2 className="text-center mb-4">Adicionar Filme</h2>
   
         <form onSubmit={handleSubmit}>
@@ -92,7 +93,7 @@ export const AddFilmes = () => {
             />
           </div>
   
-          <div className="form-group">
+          <div className="form-group mb-1">
             <label htmlFor="sinopse">Sinopse:</label>
             <textarea
               id="sinopse"
@@ -103,7 +104,7 @@ export const AddFilmes = () => {
             />
           </div>
   
-          <div className="form-group">
+          <div className="form-group mb-1">
             <label htmlFor="anoLancamento">Ano de Lançamento:</label>
             <input
               type="number"
@@ -115,7 +116,7 @@ export const AddFilmes = () => {
             />
           </div>
   
-          <div className="form-group">
+          <div className="form-group mb-1">
             <label htmlFor="categorias">Categoria:</label>
             <select
               id="categorias"
@@ -123,8 +124,10 @@ export const AddFilmes = () => {
               multiple
               value={selectedCategorias}
               onChange={(e) => {
-                const selectedOptions = Array.from(e.target.value).map(option => option.value);
-                setSelectedCategorias(selectedOptions);
+                const selectedOptions = Array.from(e.target.selectedOptions); // Converte selectedOptions em array
+                const values = selectedOptions.map(option => parseInt(option.value)); // Mapeia os valores das opções
+                setSelectedCategorias(values); // Atualiza o estado com os valores selecionados
+                console.log(categorias)
               }}
               required
             >
@@ -136,11 +139,11 @@ export const AddFilmes = () => {
             </select>
           </div>
   
-          <div className="form-group">
+          <div className="form-group mb-1">
             <label htmlFor="autor">Autor:</label>
             <select
               id="autor"
-              className="form-control"
+              className="form-select"
               value={autor}
               onChange={(e) => setAutor(parseInt(e.target.value))}
               required
@@ -154,7 +157,7 @@ export const AddFilmes = () => {
             </select>
           </div> 
   
-          <div className="form-group">
+          <div className="form-group mb-1">
             <label htmlFor="classificacaoEtaria">Classificação Etária:</label>
             <select
               id="classificacaoEtaria"
@@ -170,7 +173,7 @@ export const AddFilmes = () => {
             </select>
           </div>
   
-          <div className="form-group">
+          <div className="form-group mb-1">
             <label htmlFor="quantidade">Quantidade:</label>
             <input
               type="number"
@@ -182,30 +185,19 @@ export const AddFilmes = () => {
             />
           </div>
   
-          <div className="form-check">
-            <input
-              type="checkbox"
-              id="publico"
-              className="form-check-input"
-              checked={publico}
-              onChange={(e) => setPublico(e.target.checked)}
-            />
-            <label className="form-check-label" htmlFor="publico">Público</label>
-          </div>
-  
-          <div className="form-group mt-3">
+          <div className="form-group mb-1">
             <label htmlFor="capa">Capa:</label>
             <input
               type="file"
               id="capa"
-              className="form-control-file"
+              className="form-control"
               onChange={(e) => {
                 setCapa(e.target.files[0])}}
             />
           </div>
   
           <button type="submit" className="btn btn-primary btn-block mt-4">
-            anailson
+            Adicionar Filme
           </button>
         </form>
       </div>
