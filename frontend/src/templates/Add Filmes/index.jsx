@@ -93,7 +93,7 @@ export const AddFilmes = () => {
             />
           </div>
   
-          <div className="form-group mb-1">
+          <div className="form-group mb-2">
             <label htmlFor="sinopse">Sinopse:</label>
             <textarea
               id="sinopse"
@@ -104,19 +104,18 @@ export const AddFilmes = () => {
             />
           </div>
   
-          <div className="form-group mb-1">
+          <div className="form-group mb-2">
             <label htmlFor="anoLancamento">Ano de Lançamento:</label>
             <input
               type="number"
               id="anoLancamento"
               className="form-control"
-              value={anoLancamento}
               onChange={(e) => setAnoLancamento(e.target.value)}
               required
             />
           </div>
   
-          <div className="form-group mb-1">
+          <div className="form-group mb-2">
             <label htmlFor="categorias">Categoria:</label>
             <select
               id="categorias"
@@ -138,64 +137,66 @@ export const AddFilmes = () => {
               ))}
             </select>
           </div>
-  
-          <div className="form-group mb-1">
-            <label htmlFor="autor">Autor:</label>
-            <select
-              id="autor"
-              className="form-select"
-              value={autor}
-              onChange={(e) => setAutor(parseInt(e.target.value))}
-              required
-            >
-              <option value="">Selecione um autor</option>
-              {autores.map((autor) => (
-                <option key={autor.id} value={autor.id}>
-                  {autor.nome}
-                </option>
-              ))}
-            </select>
-          </div> 
-  
-          <div className="form-group mb-1">
-            <label htmlFor="classificacaoEtaria">Classificação Etária:</label>
-            <select
-              id="classificacaoEtaria"
-              className="form-control"
-              value={classificacaoEtaria}
-              onChange={(e) => setClassificacaoEtaria(e.target.value)}
-              required
-            >
-              <option value="10">+10</option>
-              <option value="12">+12</option>
-              <option value="14">+14</option>
-              <option value="18">+18</option>
-            </select>
+          <div className="row">
+
+            <div className="form-group col-4">
+              <label htmlFor="autor">Autor:</label>
+              <select
+                id="autor"
+                className="form-control"
+                value={autor}
+                onChange={(e) => setAutor(parseInt(e.target.value))}
+                required
+              >
+                <option value="">Selecione um autor</option>
+                {autores.map((autor) => (
+                  <option key={autor.id} value={autor.id}>
+                    {autor.nome}
+                  </option>
+                ))}
+              </select>
+            </div> 
+          
+          
+            <div className="form-group col-4">
+              <label htmlFor="classificacaoEtaria">Classificação:</label>
+              <select
+                id="classificacaoEtaria"
+                className="form-control"
+                value={classificacaoEtaria}
+                onChange={(e) => setClassificacaoEtaria(e.target.value)}
+                required
+              >
+                <option value="10">+10</option>
+                <option value="12">+12</option>
+                <option value="14">+14</option>
+                <option value="18">+18</option>
+              </select>
+            </div>
+    
+            <div className="form-group col-4">
+              <label htmlFor="quantidade">Quantidade:</label>
+              <input
+                type="number"
+                id="quantidade"
+                className="form-control"
+                onChange={(e) => setQuantidade(e.target.value)}
+                required
+              />
+            </div>
           </div>
-  
-          <div className="form-group mb-1">
-            <label htmlFor="quantidade">Quantidade:</label>
-            <input
-              type="number"
-              id="quantidade"
-              className="form-control"
-              value={quantidade}
-              onChange={(e) => setQuantidade(e.target.value)}
-              required
-            />
-          </div>
-  
-          <div className="form-group mb-1">
-            <label htmlFor="capa">Capa:</label>
-            <input
-              type="file"
-              id="capa"
-              className="form-control"
-              onChange={(e) => {
-                setCapa(e.target.files[0])}}
-            />
-          </div>
-  
+
+            <div className="form-group">
+              <label htmlFor="capa">Capa:</label>
+              <input
+                type="file"
+                id="capa"
+                className="form-control"
+                onChange={(e) => {
+                  setCapa(e.target.files[0])}}
+              />
+            </div>
+          
           <button type="submit" className="btn btn-primary btn-block mt-4">
             Adicionar Filme
           </button>
