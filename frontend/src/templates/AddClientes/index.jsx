@@ -20,51 +20,28 @@ export const AddClientes = () => {
     const handleSubmit = async (event) => {
         event.preventDefault()
 
-        const usuarioData = {
+        const Data = {
             username: usuario,
             first_name: nome,
             last_name: sobrenome,
-            email: email
+            email: email,
+            cpf: cpf,
+            telefone: fone
         };
 
         try { 
-        const usuario_response = await fetch('http://127.0.0.1:8000/cliente/usuario', {
+        const usuario_response = await fetch('http://127.0.0.1:8000/cliente/create/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(usuarioData),
+            body: JSON.stringify(Data),
         })
 
         if (usuario_response.ok){
             const usuario_jsonResponse = await usuario_response.json()
-
-            const cliente_data = {
-                usuario: usuario_jsonResponse.id,
-                cpf: cpf,
-                telefone: fone
-            }
-
-            const cliente_response = await fetch('http://127.0.0.1:8000/cliente/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(cliente_data)
-            })
-
-            if(cliente_response.ok){
-                const cliente_jsonresponse = await cliente_response.json()
-                SetMessages(GlobalDispatch,{messages:'Cliente adicionado com sucesso.', messageType: 'success'});
-                navigate('/')}
-
-            else{
-            const errorResponse = await cliente_response.json();
-            console.error("Erro na resposta do servidor: ", errorResponse);
-            SetMessages(GlobalDispatch,{messages:'Erro ao adicionar o cliente.', messageType: 'error'});
-            }
-        }
-           
+            SetMessages(GlobalDispatch,{messages:'Cliente adicionado com sucesso.', messageType: 'success'});
+            navigate('/')}
 
         else{
             const errorResponse = await usuario_response.json();
@@ -73,7 +50,7 @@ export const AddClientes = () => {
           }}
 
         catch(err) {
-            SetMessages(GlobalDispatch,{messages:'Erro ao adicionar o cliente.', messageType: 'error'});
+            SetMessages(GlobalDispatch,{messages:'Erro tentar criar o Cliente.', messageType: 'error'});
           }}
     
 

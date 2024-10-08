@@ -8,6 +8,7 @@ import { Alugueis } from '../../../templates/Alugueis';
 import { AlugueisAtrasos } from '../../../templates/Alugueis Atrasos';
 import { AddFilmes } from '../../../templates/Add Filmes';
 import { AddClientes } from '../../../templates/AddClientes';
+import { EditarFilme } from '../../../templates/EditarFilme';
 
 export const Rotas = () => {
     return (
@@ -15,6 +16,7 @@ export const Rotas = () => {
           <Route path='/' element= {<Home/>}/>
           <Route path='/filmes/adicionar/' element={<AddFilmes/>}/>
           <Route path='/:slug' element= {<Detalhes/>}/>
+          <Route path='/edit/:slug' element= {<EditarFilme/>}/>
           <Route path='/carrinho' element= {<Carrinho/>}/>
           <Route path='/clientes' element={<Clientes/>}/>
           <Route path='/clientes/adicionar/' element={<AddClientes/>}/>

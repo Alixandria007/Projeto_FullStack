@@ -1,85 +1,88 @@
-import { useContext, useEffect, useState } from "react"
-import { SetMessages } from "../../context/GlobalContext/action";
-import { GlobalContext } from "../../context/GlobalContext";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import './styles.css';
 
-export const AddFilmes = () => {
-  const navigate = useNavigate()
-  const context = useContext(GlobalContext)
-  const {GlobalDispatch} = context
+export const EditarFilme = () => {
+    const [filme, setFilme] = useState(null);
+    const [titulo, setTitulo] = useState('');
+    const [sinopse, setSinopse] = useState('');
+    const [anoLancamento, setAnoLancamento] = useState('');
+    const [selectedCategorias, setSelectedCategorias] = useState([]);
+    const [categorias, setCategorias] = useState([]);
+    const [autor, setAutor] = useState('');
+    const [autores, setAutores] = useState([]);
+    const [classificacaoEtaria, setClassificacaoEtaria] = useState('');
+    const [quantidade, setQuantidade] = useState('');
+    const [capa, setCapa] = useState(null);
+    const { slug } = useParams();
+    const navigate = useNavigate();
 
-  const [titulo, setTitulo] = useState('');
-  const [sinopse, setSinopse] = useState('');
-  const [anoLancamento, setAnoLancamento] = useState(1900);
-  const [categorias, setCategorias] = useState([]);
-  const [autores, setAutores] = useState([]);
-  const [selectedCategorias, setSelectedCategorias] = useState([]);
-  const [autor, setAutor] = useState(null);
-  const [classificacaoEtaria, setClassificacaoEtaria] = useState('10');
-  const [capa, setCapa] = useState(null);
-  const [quantidade, setQuantidade] = useState(1);
+    useEffect(() => {
+        const fetchFilmeData = async () => {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/filme/detail/${slug}/`);
+                const data = await response.json();
+                setFilme(data);
+                setTitulo(data.titulo);
+                setSinopse(data.sinopse);
+                setAnoLancamento(data.ano_lancamento);
+                setSelectedCategorias(data.categorias);
+                setAutor(data.autor);
+                setClassificacaoEtaria(data.classificacao_etaria);
+                setQuantidade(data.quantidade);
+            } catch (error) {
+                console.error('Erro ao carregar os dados do filme:', error);
+            }
+        };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const categoriaResponse = await fetch('http://127.0.0.1:8000/filme/categoria');
-        const autorResponse = await fetch('http://127.0.0.1:8000/filme/autor');
-        const categoriasData = await categoriaResponse.json();
-        const autoresData = await autorResponse.json();
+        const fetchData = async () => {
+            try {
+                const categoriaResponse = await fetch('http://127.0.0.1:8000/filme/categoria');
+                const autorResponse = await fetch('http://127.0.0.1:8000/filme/autor');
+                const categoriasData = await categoriaResponse.json();
+                const autoresData = await autorResponse.json();
 
-        setCategorias(categoriasData);
-        setAutores(autoresData);
-      } catch (err) {
-        SetMessages(GlobalDispatch,{messages:'Erro ao buscar categorias e autores.', messageTypes: 'error'});
-      }
+                setCategorias(categoriasData);
+                setAutores(autoresData);
+            } catch (err) {
+                console.error('Erro ao buscar categorias e autores:', err);
+            }
+        };
+        fetchData();
+        fetchFilmeData();
+    }, [slug]);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const formData = new FormData();
+        if (titulo) formData.append('titulo', titulo);
+        if (sinopse) formData.append('sinopse', sinopse);
+        if (anoLancamento) formData.append('anoLancamento', anoLancamento);
+        selectedCategorias.forEach((cat) => formData.append('categorias', cat));
+        if (autor) formData.append('autor', autor);
+        if (classificacaoEtaria) formData.append('classificacaoEtaria', classificacaoEtaria);
+        if (quantidade) formData.append('quantidade', quantidade);
+        if (capa) formData.append('capa', capa);
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/filme/update/${slug}/`, {
+                method: 'PATCH',
+                body: formData,
+            });
+            if (response.ok) {
+                navigate('/');
+            } else {
+                console.error('Erro ao editar o filme');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+        }
     };
-    
-    fetchData();
-  }, []);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
 
-    const formData = new FormData();
-    formData.append('titulo', titulo);
-    formData.append('sinopse', sinopse);
-    formData.append('ano_lancamento', anoLancamento);
-    categorias.forEach(categoria => {
-      formData.append('categoria', JSON.stringify(categoria.id));
-  });
-    formData.append('autor', autor);
-    formData.append('classificacao_etaria', classificacaoEtaria);
-    formData.append('quantidade', quantidade);
-    formData.append('capa', capa);
-
-    try {
-      const response = await fetch('http://127.0.0.1:8000/filme/', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (response.ok){
-        console.log('passei')
-        const jsonResponse = await response.json();
-        SetMessages(GlobalDispatch,{messages:'Filme adicionado com sucesso.', messageType: 'success'});
-        navigate('/')}
-        
-        else{
-        const errorResponse = await response.json();
-        console.error("Erro na resposta do servidor: ", errorResponse);
-        SetMessages(GlobalDispatch,{messages:'Erro ao adicionar filme.', messageType: 'error'});
-      }
-      }
-
-      
-     catch (err) {
-      SetMessages(GlobalDispatch,{messages:'Erro ao adicionar filme.', messageType: 'error'});
-    }
-  };
-
-  return (
-      <div className="box-form my-5">
-        <h2 className="text-center mb-4">Adicionar Filme</h2>
+    return(
+    <div className="box-form my-5">
+        <h2 className="text-center mb-4">Editar Filme</h2>
   
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -111,6 +114,7 @@ export const AddFilmes = () => {
               type="number"
               id="anoLancamento"
               className="form-control"
+              value={anoLancamento}
               onChange={(e) => setAnoLancamento(e.target.value)}
               required
             />
@@ -181,6 +185,7 @@ export const AddFilmes = () => {
                 type="number"
                 id="quantidade"
                 className="form-control"
+                value={quantidade}
                 onChange={(e) => setQuantidade(e.target.value)}
                 required
               />
@@ -193,6 +198,7 @@ export const AddFilmes = () => {
                 type="file"
                 id="capa"
                 className="form-control"
+                
                 onChange={(e) => {
                   setCapa(e.target.files[0])}}
               />
@@ -203,5 +209,5 @@ export const AddFilmes = () => {
           </button>
         </form>
       </div>
-  );
-};
+    )
+}

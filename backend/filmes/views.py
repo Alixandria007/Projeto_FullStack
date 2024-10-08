@@ -37,6 +37,10 @@ def filme_detail(request, slug):
     return Response(serializer.data)
 
 @api_view()
+def filme_edit(request, slug):
+    ...
+
+@api_view()
 def categoria_list(request):
     categoria = models.Categoria.objects.all()
     serializer = serializers.CategoriaSerializer(instance = categoria, many = True)

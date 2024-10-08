@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import './styles.css';
 import { useState, useEffect, useRef, useContext } from 'react';
 import { GlobalContext } from '../../context/GlobalContext';
@@ -121,7 +121,11 @@ export const Detalhes = () => {
                     <input ref={quantidade} type="number" min='1' value={'1'} max={filme.quantidade} class="form-quant form-control" id="quantidade" placeholder=""/>
                 </div>
 
-                <button onClick={() => Add_Carinho(filme, quantidade.current.value)} type="button" className='btn btn-primary'>Adicionar ao carrinho</button>
+                <div className="d-flex gap-4">
+                    <Link to={`/edit/${slug}`} type="button" className='btn btn-secondary'>Editar Filme</Link>
+                    <button onClick={() => Add_Carinho(filme, quantidade.current.value)} type="button" className='btn btn-primary'>Adicionar ao carrinho</button>
+                </div>
+               
             </div>
         </div>
     );
