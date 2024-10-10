@@ -3,10 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './styles.css';
 import { SetMessages } from '../../context/GlobalContext/action';
 import { GlobalContext } from '../../context/GlobalContext';
+import { ConfirmScreen } from '../../components/ConfirmScreen';
 
 export const EditarFilme = () => {
     const context = useContext(GlobalContext)
     const {GlobalDispatch} = context
+    const navigate = useNavigate();
+    const [overlay, setOverlay] = useState(false)
 
     const [filme, setFilme] = useState(null);
     const [titulo, setTitulo] = useState('');
@@ -21,7 +24,7 @@ export const EditarFilme = () => {
     const [capa, setCapa] = useState(null);
     const { slug } = useParams();
     const [imagem, setImagem] = useState(null);
-    const navigate = useNavigate();
+    
 
     useEffect(() => {
         const fetchFilmeData = async () => {
@@ -103,11 +106,12 @@ export const EditarFilme = () => {
         }
       }
       catch{
-        {
           SetMessages(GlobalDispatch,{'messages': 'Error ao tentar deletar o filme!', 'messagesType': 'error'})
-        }
       }
     }
+
+    const openOverlay = () => setOverlay(true);
+    const closeOverlay = () => setOverlay(false);
 
 
     return(
@@ -185,7 +189,7 @@ export const EditarFilme = () => {
               >
                 <option value="">Selecione um autor</option>
                 {autores.map((autor) => (
-                  <option key={filme.autor.id} value={filme.autor.id}>
+                  <option key={autor.id} value={autor.id}>
                     {filme.autor.nome}
                   </option>
                 ))}
@@ -244,9 +248,18 @@ export const EditarFilme = () => {
 
             
           <div className="d-flex justify-content-between">
-            <button type="button" onClick={() => handleDelete()} className="btn btn-danger btn-block mt-4">
+            <button type="button" onClick={openOverlay} className="btn btn-danger btn-block mt-4">
               Deletar Filme
             </button>
+
+            {
+              overlay && 
+              <ConfirmScreen
+              isOpen={overlay}
+              onClose={closeOverlay}
+              onConfirm={handleDelete}
+              title={titulo}/>
+            }
 
             <button type="submit" className="btn btn-primary btn-block mt-4">
               Editar Filme
