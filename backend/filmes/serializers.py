@@ -13,7 +13,6 @@ class AutorSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class FilmesSerializer(serializers.ModelSerializer):
-    classificacao_etaria = serializers.CharField(source='get_classificacao_etaria_display')
     autor = AutorSerializer(read_only = True)
     categoria = CategoriaSerializer(many = True)
     slug = serializers.SlugField(read_only = True)

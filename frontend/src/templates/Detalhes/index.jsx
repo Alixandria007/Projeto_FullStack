@@ -108,7 +108,7 @@ export const Detalhes = () => {
                 
                 <div className='datail-item pb-2'>
                     <h6 className='detail-label'><strong>Classificação Etária:</strong> </h6> 
-                    <p>{filme.classificacao_etaria}</p>
+                    <p>+{filme.classificacao_etaria}</p>
                 </div>
 
                 <div className='datail-item pb-2'>

@@ -1,8 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './styles.css';
+import { SetMessages } from '../../context/GlobalContext/action';
+import { GlobalContext } from '../../context/GlobalContext';
 
 export const EditarFilme = () => {
+    const context = useContext(GlobalContext)
+    const {GlobalDispatch} = context
+
     const [filme, setFilme] = useState(null);
     const [titulo, setTitulo] = useState('');
     const [sinopse, setSinopse] = useState('');
@@ -15,6 +20,7 @@ export const EditarFilme = () => {
     const [quantidade, setQuantidade] = useState('');
     const [capa, setCapa] = useState(null);
     const { slug } = useParams();
+    const [imagem, setImagem] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,9 +32,11 @@ export const EditarFilme = () => {
                 setTitulo(data.titulo);
                 setSinopse(data.sinopse);
                 setAnoLancamento(data.ano_lancamento);
-                setSelectedCategorias(data.categorias);
-                setAutor(data.autor);
+                setSelectedCategorias(data.categoria.map((categoria) => categoria.id));
+                setAutor(data.autor.id);
                 setClassificacaoEtaria(data.classificacao_etaria);
+                setCapa(data.capa)
+                setImagem(data.capa)
                 setQuantidade(data.quantidade);
             } catch (error) {
                 console.error('Erro ao carregar os dados do filme:', error);
@@ -65,7 +73,7 @@ export const EditarFilme = () => {
         if (capa) formData.append('capa', capa);
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/filme/update/${slug}/`, {
+            const response = await fetch(`http://127.0.0.1:8000/filme/detail/edit/${slug}/`, {
                 method: 'PATCH',
                 body: formData,
             });
@@ -78,6 +86,28 @@ export const EditarFilme = () => {
             console.error('Erro:', error);
         }
     };
+
+    const handleDelete = async () => {
+      try{
+        const response = await fetch(`http://127.0.0.1:8000/filme/detail/delete/${slug}/`,{
+          method: 'DELETE'
+        })
+
+        if (response.ok){
+          SetMessages(GlobalDispatch,{'messages': 'Filme Deletado com sucesso!', 'messagesType': 'success'})
+          navigate('/')
+        }
+
+        else{
+          SetMessages(GlobalDispatch,{'messages': 'Error ao tentar deletar o filme!', 'messagesType': 'error'})
+        }
+      }
+      catch{
+        {
+          SetMessages(GlobalDispatch,{'messages': 'Error ao tentar deletar o filme!', 'messagesType': 'error'})
+        }
+      }
+    }
 
 
     return(
@@ -131,7 +161,7 @@ export const EditarFilme = () => {
                 const selectedOptions = Array.from(e.target.selectedOptions);
                 const values = selectedOptions.map(option => parseInt(option.value));
                 setSelectedCategorias(values); 
-                console.log(categorias)
+                console.log(selectedCategorias)
               }}
               required
             >
@@ -155,8 +185,8 @@ export const EditarFilme = () => {
               >
                 <option value="">Selecione um autor</option>
                 {autores.map((autor) => (
-                  <option key={autor.id} value={autor.id}>
-                    {autor.nome}
+                  <option key={filme.autor.id} value={filme.autor.id}>
+                    {filme.autor.nome}
                   </option>
                 ))}
               </select>
@@ -194,6 +224,14 @@ export const EditarFilme = () => {
 
             <div className="form-group">
               <label htmlFor="capa">Capa:</label>
+              <div className="">
+                {imagem ? (
+                    <img src={`http://localhost:8000${imagem}`} className='img'  alt={titulo} />
+                ) : (
+                    <p>Sem imagem</p>
+                )}
+            </div>
+
               <input
                 type="file"
                 id="capa"
@@ -203,10 +241,18 @@ export const EditarFilme = () => {
                   setCapa(e.target.files[0])}}
               />
             </div>
+
+            
+          <div className="d-flex justify-content-between">
+            <button type="button" onClick={() => handleDelete()} className="btn btn-danger btn-block mt-4">
+              Deletar Filme
+            </button>
+
+            <button type="submit" className="btn btn-primary btn-block mt-4">
+              Editar Filme
+            </button>
+          </div>
           
-          <button type="submit" className="btn btn-primary btn-block mt-4">
-            Adicionar Filme
-          </button>
         </form>
       </div>
     )
