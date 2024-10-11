@@ -1,10 +1,11 @@
 from django.shortcuts import render
+from django.db import transaction
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from . import models, serializers
-from django.db import transaction
-# Create your views here.
+
 
 @api_view(['GET'])
 def clientes(request):
@@ -16,19 +17,16 @@ def clientes(request):
             many = True
         )
         return Response(serializer.data)
-    
-    elif request.method == 'POST':
-        data = request.data
 
-        serializer = serializers.ClienteSerializerPOST(
-            data = data
+@api_view(['GET'])
+def clientes_detail(request, id):
+    if request.method == 'GET':
+        cliente = get_object_or_404(models.Cliente, id = id)
+        
+        serializer = serializers.ClienteSerializer(
+            instance = cliente
         )
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.data)
 
 
 @api_view(['POST'])

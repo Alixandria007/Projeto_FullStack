@@ -9,6 +9,7 @@ import { AlugueisAtrasos } from '../../../templates/Alugueis Atrasos';
 import { AddFilmes } from '../../../templates/Add Filmes';
 import { AddClientes } from '../../../templates/AddClientes';
 import { EditarFilme } from '../../../templates/EditarFilme';
+import { ClientesDetalhes } from '../../../templates/ClientesDetalhes';
 
 export const Rotas = () => {
     return (
@@ -19,6 +20,7 @@ export const Rotas = () => {
           <Route path='/edit/:slug' element= {<EditarFilme/>}/>
           <Route path='/carrinho' element= {<Carrinho/>}/>
           <Route path='/clientes' element={<Clientes/>}/>
+          <Route path='/clientes/detalhes/:id' element={<ClientesDetalhes/>}/>
           <Route path='/clientes/adicionar/' element={<AddClientes/>}/>
           <Route path='/categorias' element={<Categorias/>}/>
           <Route path='/alugueis' element={<Alugueis/>}/>

@@ -97,16 +97,16 @@ export const EditarFilme = () => {
         })
 
         if (response.ok){
-          SetMessages(GlobalDispatch,{'messages': 'Filme Deletado com sucesso!', 'messagesType': 'success'})
+          SetMessages(GlobalDispatch,{'messages': 'Filme Deletado com sucesso!', 'messageType': 'success'})
           navigate('/')
         }
 
         else{
-          SetMessages(GlobalDispatch,{'messages': 'Error ao tentar deletar o filme!', 'messagesType': 'error'})
+          SetMessages(GlobalDispatch,{'messages': 'Error ao tentar deletar o filme!', 'messageType': 'error'})
         }
       }
       catch{
-          SetMessages(GlobalDispatch,{'messages': 'Error ao tentar deletar o filme!', 'messagesType': 'error'})
+          SetMessages(GlobalDispatch,{'messages': 'Error ao tentar deletar o filme!', 'messageType': 'error'})
       }
     }
 
@@ -252,14 +252,12 @@ export const EditarFilme = () => {
               Deletar Filme
             </button>
 
-            {
-              overlay && 
-              <ConfirmScreen
-              isOpen={overlay}
-              onClose={closeOverlay}
-              onConfirm={handleDelete}
-              title={titulo}/>
-            }
+            <ConfirmScreen
+            isOpen={overlay}
+            onClose={closeOverlay}
+            onConfirm={handleDelete}
+            title={titulo}
+          />
 
             <button type="submit" className="btn btn-primary btn-block mt-4">
               Editar Filme
