@@ -71,8 +71,8 @@ export const Clientes = () => {
             tbody={
                 clientes.map((cliente) => (
                     <tr key={cliente.id}>
-                        <td><Link className='link'>{cliente.id}</Link></td>
-                        <td><Link className='link'>{cliente.usuario.first_name} {cliente.usuario.last_name}</Link></td>
+                        <td><Link to={`/clientes/detalhes/${cliente.id}`} className='link'>{cliente.id}</Link></td>
+                        <td><Link to={`/clientes/detalhes/${cliente.id}`} className='link'>{cliente.usuario.first_name} {cliente.usuario.last_name}</Link></td>
                         <td>{cliente.usuario.email}</td>
                         <td>{cliente.telefone}</td>
                         <td>...</td>

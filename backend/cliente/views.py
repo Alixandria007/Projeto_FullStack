@@ -24,7 +24,8 @@ def clientes_detail(request, id):
         cliente = get_object_or_404(models.Cliente, id = id)
         
         serializer = serializers.ClienteSerializer(
-            instance = cliente
+            instance = cliente,
+            many = False
         )
         return Response(serializer.data)
 
