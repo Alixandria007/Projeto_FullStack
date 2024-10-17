@@ -18,6 +18,7 @@ def clientes(request):
         )
         return Response(serializer.data)
 
+
 @api_view(['GET'])
 def clientes_detail(request, id):
     if request.method == 'GET':
@@ -28,6 +29,17 @@ def clientes_detail(request, id):
             many = False
         )
         return Response(serializer.data)
+    
+@api_view(['DELETE'])
+def cliente_delete(request, id):
+    if request.method == 'DELETE':
+        cliente = get_object_or_404(models.Cliente, id = id)
+        usuario = get_object_or_404(models.User, id = cliente.usuario.id)
+
+        cliente.delete()
+        usuario.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['POST'])

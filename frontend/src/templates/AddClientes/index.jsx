@@ -3,6 +3,7 @@ import './styles.css'
 import { SetMessages } from '../../context/GlobalContext/action'
 import { GlobalContext } from '../../context/GlobalContext'
 import { useNavigate } from 'react-router-dom'
+import { FormCliente } from '../../components/FormCliente'
 
 
 export const AddClientes = () => {
@@ -58,8 +59,9 @@ export const AddClientes = () => {
         <div className="box-form my-5">
             <h2 className="text-center mb-4">Adicionar Cliente</h2>
     
-            <form onSubmit={handleSubmit}>
-
+            <FormCliente
+            buttonText={"Adicionar Cliente"}
+            submit={handleSubmit}>
                 <div className="form-group mb-2">
                     <label htmlFor="usuario" className="form-label">Usuario:</label>
                     <input className="form-control" type="text" value={usuario} onChange={(e) => setUsuario(e.target.value)} id="usuario"/>
@@ -91,10 +93,6 @@ export const AddClientes = () => {
                         <input className="form-control" type="text" value={fone} onChange={(e) => setFone(e.target.value)} id="telefone"/>
                     </div>
                 </div>
-
-                <button type="submit" className="btn btn-primary btn-block mt-4">
-                    Adicionar Filme
-                </button>
-            </form>
+            </FormCliente>
         </div>
         )}

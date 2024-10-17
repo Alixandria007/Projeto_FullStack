@@ -256,7 +256,7 @@ export const EditarFilme = () => {
             isOpen={overlay}
             onClose={closeOverlay}
             onConfirm={handleDelete}
-            title={titulo}
+            text={`Você tem certeza que vai deletar "${titulo}"?`}
           />
 
             <button type="submit" className="btn btn-primary btn-block mt-4">
