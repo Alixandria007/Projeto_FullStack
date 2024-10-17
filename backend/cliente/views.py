@@ -41,6 +41,39 @@ def cliente_delete(request, id):
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['PATCH'])
+def cliente_delete(request, id):
+    if request.method == 'PATCH':
+        usuario_data = {
+            'username': request.data.get('username'),
+            'first_name': request.data.get('first_name'),
+            'last_name': request.data.get('last_name'),
+            'email': request.data.get('email')
+        }
+
+        cliente_data = {
+            'telefone': request.data.get('telefone'),
+            'cpf': request.data.get('cpf')
+        }
+
+        cliente_model = get_object_or_404(models.Cliente, id = request.data.get("id"))
+        usuario_model = get_object_or_404(models.User, id=cliente_model.usuario.id)
+
+        with transaction.atomic():
+            usuario_serializer = serializers.UsuarioSerializer(instance = usuario_model, data=usuario_data, partial = True)
+            if usuario_serializer.is_valid():
+                usuario_serializer.save()
+
+                cliente_serializer = serializers.ClienteSerializerPOST(instance = cliente_model, data=cliente_data, partial = True)
+
+                if cliente_serializer.is_valid(raise_exception=True):
+                    cliente_serializer.save()
+                    return Response({
+                        "usuario": usuario_serializer.data,
+                        "cliente": cliente_serializer.data
+                    }, status=status.HTTP_201_CREATED)
+            return Response({"error": "Erro na criação do cliente ou usuário"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def create_cliente(request):

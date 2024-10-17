@@ -1,10 +1,28 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Tabela } from '../../components/Tabela'
 import './styles.css'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { SetMessages } from '../../context/GlobalContext/action'
+import { GlobalContext } from '../../context/GlobalContext'
 
 export const Alugueis = () => {
+    const context = useContext(GlobalContext)
+    const {GlobalDispatch} = context
     const [alugueis, setAlugueis] = useState([])
+
+    const DevolverPedido = async (id) => {
+        const response = await fetch(`http://127.0.0.1:8000/aluguel/devolver/${id}`,{
+            method: "PATCH"
+        })
+
+        if (response.ok){
+            SetMessages(GlobalDispatch, {messages: "Status do pedido atualizado com sucesso!", messageType: 'success'})
+        }
+
+        else{
+            SetMessages(GlobalDispatch, {messages: "Erro ao atualizar o status do pedido!", messageType: 'error'})
+        }
+    }
 
     useEffect( () => {
         const AlugueisApi = async () => {
@@ -22,7 +40,7 @@ export const Alugueis = () => {
 
         AlugueisApi()
         
-    }, [])
+    }, [DevolverPedido])
 
     return(
         <div className="box alugueis">
@@ -47,13 +65,13 @@ export const Alugueis = () => {
                     <td>{aluguel.data_aluguel}</td>
                     <td>{aluguel.vencimento}</td>
                     <td>{aluguel.status}</td>
-                    <td><button className='btn btn-primary btn-sm'>Devolvido</button></td>
+                    <td><button onClick={() => DevolverPedido(aluguel.id)} className='btn btn-primary btn-sm'>Devolvido</button></td>
                 </tr>
             ))
             }
         />
     ) : (
-        <p>Carregando categorias...</p>
+        <p>Carregando Alugueis...</p>
     )}
     </div>
     )

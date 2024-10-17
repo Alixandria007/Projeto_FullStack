@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -38,3 +38,18 @@ def aluguel_list_atrasos(request):
     serializer = serializers.AluguelSerializerGet(instance = model, many = True)
     
     return Response(serializer.data)
+
+@api_view(['PATCH'])
+def devolver_pedido(request, id):
+    if request.method == "PATCH":
+        aluguel = get_object_or_404(models.Aluguel, id = id)
+        aluguel_data = {
+            "status": "D",
+        }
+
+        aluguel_serializer = serializers.AluguelSerializer(instance=aluguel, data = aluguel_data, partial = True)
+
+        if aluguel_serializer.is_valid():
+            aluguel_serializer.save()
+            return Response(aluguel_serializer.data, status=status.HTTP_200_OK)
+        return Response("Erro ao atualizar o status de um aluguel!" , status=status.HTTP_400_BAD_REQUEST)

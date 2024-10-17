@@ -91,7 +91,7 @@ export const ClientesDetalhes = () => {
                     text={`Você tem certeza que vai apagar o cliente "${cliente.usuario.username}"?`}
                 />
 
-                <Link to={`/`} type="button" className='btn btn-primary'>Editar Dados</Link>
+                <Link to={`/clientes/edit/${id}`} type="button" className='btn btn-primary'>Editar Dados</Link>
             </div>
         </div>
 
