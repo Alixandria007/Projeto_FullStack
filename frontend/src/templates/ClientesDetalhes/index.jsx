@@ -81,7 +81,7 @@ export const ClientesDetalhes = () => {
 
             <div className="button-wrapper d-flex gap-4">
                 <button type="button" onClick={openOverlay} className="btn btn-danger btn-block">
-                    Deletar Filme
+                    Deletar Cliente
                 </button>
 
                 <ConfirmScreen

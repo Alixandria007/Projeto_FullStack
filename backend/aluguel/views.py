@@ -34,8 +34,15 @@ def aluguel_list(request):
 
 @api_view(['GET'])
 def aluguel_list_atrasos(request):
-    model = models.Aluguel.objects.filter(status = 'A')
+    model = models.Aluguel.objects.filter(status = 'V')
     serializer = serializers.AluguelSerializerGet(instance = model, many = True)
+    
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def detalhes_aluguel(request,id):
+    filmes = models.ItemAluguel.objects.filter(aluguel = id)
+    serializer = serializers.ItemAluguelSerializer(instance = filmes, many = True)
     
     return Response(serializer.data)
 
