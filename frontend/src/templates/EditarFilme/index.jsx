@@ -38,7 +38,6 @@ export const EditarFilme = () => {
                 setSelectedCategorias(data.categoria.map((categoria) => categoria.id));
                 setAutor(data.autor.id);
                 setClassificacaoEtaria(data.classificacao_etaria);
-                setCapa(data.capa)
                 setImagem(data.capa)
                 setQuantidade(data.quantidade);
             } catch (error) {

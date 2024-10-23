@@ -1,15 +1,35 @@
 import { Link } from 'react-router-dom'
 import { Tabela } from '../../components/Tabela'
 import './styles.css'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { SetMessages } from '../../context/GlobalContext/action'
+import { GlobalContext } from '../../context/GlobalContext'
 
 export const AlugueisAtrasos = () => {
+    const context = useContext(GlobalContext)
+    const {GlobalDispatch} = context
+    const [isUpdated, setIsUpdated] = useState(false)
     const [alugueis, setAlugueis] = useState([])
+
+    const DevolverPedido = async (id) => {
+        const response = await fetch(`http://127.0.0.1:8000/aluguel/devolver/${id}`,{
+            method: "PATCH"
+        })
+
+        if (response.ok){
+            SetMessages(GlobalDispatch, {messages: "Status do pedido atualizado com sucesso!", messageType: 'success'})
+            setIsUpdated(!isUpdated)
+        }
+
+        else{
+            SetMessages(GlobalDispatch, {messages: "Erro ao atualizar o status do pedido!", messageType: 'error'})
+        }
+    }
 
     useEffect( () => {
         const AlugueisApi = async () => {
             try{
-            const response = await fetch('http://127.0.0.1:8000/aluguel/aluguel_list/atrasos/')
+            const response = await fetch('http://127.0.0.1:8000/aluguel/aluguel_list/')
             const data = await response.json()
 
             setAlugueis(data)
@@ -22,7 +42,7 @@ export const AlugueisAtrasos = () => {
 
         AlugueisApi()
         
-    }, [])
+    }, [isUpdated])
 
     return(
         <div className="box alugueis">
@@ -47,7 +67,7 @@ export const AlugueisAtrasos = () => {
                     <td>{aluguel.data_aluguel}</td>
                     <td>{aluguel.vencimento}</td>
                     <td>{aluguel.status}</td>
-                    <td><button className='btn btn-primary btn-sm'>Devolvido</button></td>
+                    <td><button onClick={() => DevolverPedido(aluguel.id)} className='btn btn-primary btn-sm'>Devolvido</button></td>
                 </tr>
             ))
             }

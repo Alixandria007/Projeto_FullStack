@@ -5,11 +5,12 @@ import { useParams } from "react-router-dom"
 export const DetalhesAluguel = () => {
     const {id} = useParams()
     const [itens, setItens] = useState()
+    const [aluguel, setAluguel] = useState()
 
     useEffect(() => {
-        const fetctData = async () => {
+        const fetchFilmes = async () => {
             try{
-            const response = await fetch(`http://127.0.0.1:8000/aluguel/detalhes/${id}`, {
+            const response = await fetch(`http://127.0.0.1:8000/aluguel/detalhes/itens/${id}`, {
                 method: "GET"
             })
             
@@ -25,16 +26,56 @@ export const DetalhesAluguel = () => {
             console.error('Erro ao buscar dados:', error);
         }}
 
-        fetctData()
+        const fetchAluguel = async () => {
+            try{
+            const response = await fetch(`http://127.0.0.1:8000/aluguel/detalhes/${id}`, {
+                method: "GET"
+            })
+            
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json()
+            setAluguel(data)
+        }
+    
+        catch (error) {
+            console.error('Erro ao buscar dados:', error);
+        }}
+
+        fetchFilmes()
+        fetchAluguel()
 
     }, [])
 
-    if (!itens) {
+    if (!itens || !aluguel) {
         return <div>Carregando...</div>;
     }
 
     return(
         <>
+            <div className="box cliente-wrapper mb-3">
+            <h3 className="text-center cliente-title mb-3">Informações do Aluguel nº{id}</h3>
+
+            <div className="row">
+                <p className="col"><strong>ID do Cliente:</strong> {aluguel.cliente.id}</p>
+                <p className="col"><strong>Status:</strong> {aluguel.status}</p>
+            </div>
+
+            <div className="row">
+                <p className="col"><strong>Username:</strong> {aluguel.cliente.usuario?.username}</p>
+                <p className="col"><strong>Nome completo:</strong> {aluguel.cliente.usuario?.first_name} {aluguel.cliente.usuario?.last_name}</p>
+            </div>
+
+            <div className="row">
+                <p className="col"><strong>Data do Aluguel:</strong> {aluguel.data_aluguel}</p>
+                <p className="col"><strong>Data do Vencimento:</strong> {aluguel.vencimento}</p>
+            </div>
+
+            
+        </div>
+
             <div className="box carrinho-wrapper">
                 
                 <Tabela 

@@ -61,35 +61,15 @@ export const Carrinho = () => {
                     cliente: carrinho.dono_carrinho.id,
                     data_aluguel: new Date().toISOString().slice(0, 10),
                     vencimento: dataDevolucaoFormatada,
-                    valor_total: calcularValorTotal(carrinho.filmes),
-                    status: 'P'
+                    status: 'P',
+                    filmes: carrinho.filmes
                 }),
             });
     
             if (!aluguelResponse.ok) {
                 throw new Error('Erro ao criar o aluguel.');
             }
-    
-            const aluguel = await aluguelResponse.json();
-    
-            for (const filme of carrinho.filmes) {
-                const itemAluguelResponse = await fetch('http://127.0.0.1:8000/aluguel/inserir_filme/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        aluguel: aluguel.id, 
-                        filme: filme.id,
-                        quantidade: filme.quantidade
-                    }),
-                });
-    
-                if (!itemAluguelResponse.ok) {
-                    throw new Error(`Erro ao adicionar o filme ${filme.titulo} no aluguel.`);
-                }
-            }
-    
+        
             SetMessages(GlobalDispatch, {messages: 'Aluguel criado com sucesso!', messageType: 'success'})
             sessionStorage.clear()
             navigate('/')
@@ -97,14 +77,6 @@ export const Carrinho = () => {
             SetMessages(GlobalDispatch, {messages: 'Erro ao criar o carrinho!', messageType: 'error'})
             console.error('Erro ao criar o aluguel:', error);
         }
-    };
-    
-    const calcularValorTotal = (filmes) => {
-        let valorTotal = 0;
-        filmes.forEach((filme) => {
-            valorTotal += filme.preco * filme.quantidade;
-        });
-        return valorTotal;
     };
     
     return (

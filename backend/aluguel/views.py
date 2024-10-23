@@ -1,29 +1,45 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.db import transaction
 from rest_framework import status
 from . import models, serializers
 
 # Create your views here.
 
 @api_view(['POST'])
-def insert_item_aluguel(request):
-    if request.method == 'POST':
-        serializer = serializers.ItemAluguelSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
-    
-@api_view(['POST'])
 def create_aluguel(request):
-    serializer = serializers.AluguelSerializer(data=request.data)
-    
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'POST':
+        aluguel_data = {
+            "cliente": request.data.get("cliente"),
+            "data_aluguel": request.data.get("data_aluguel"),
+            "vencimento": request.data.get("vencimento"),
+            "status": request.data.get("status")
+        }
+
+        
+
+        with transaction.atomic():
+            serializer_aluguel = serializers.AluguelSerializer(data=aluguel_data)
+            if serializer_aluguel.is_valid():
+                aluguel = serializer_aluguel.save()
+
+                for i in request.data.get('filmes'):
+                    print(i['id'])  
+
+                    filme_data = {
+                                "filme": i.get("id"),
+                                "quantidade": i.get("quantidade"),
+                                "aluguel": aluguel.id
+                            }
+                    
+
+                    serializer_filme = serializers.ItemAluguelSerializer(data=filme_data)
+                    if serializer_filme.is_valid():
+                        serializer_filme.save()
+                return Response({"filme": serializer_filme.data, "aluguel": serializer_aluguel.data}, status=201)
+            
+            return Response({"filmes":serializer_filme.errors, "aluguel": serializer_aluguel.errors}, status=400)
     
 @api_view(['GET'])
 def aluguel_list(request):
@@ -41,8 +57,15 @@ def aluguel_list_atrasos(request):
 
 @api_view(['GET'])
 def detalhes_aluguel(request,id):
+    aluguel = models.Aluguel.objects.filter(id = id).first()
+    serializer = serializers.AluguelSerializerGet(instance = aluguel)
+    
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def detalhes_itens_aluguel(request,id):
     filmes = models.ItemAluguel.objects.filter(aluguel = id)
-    serializer = serializers.ItemAluguelSerializer(instance = filmes, many = True)
+    serializer = serializers.ItemAluguelSerializerGet(instance = filmes, many = True)
     
     return Response(serializer.data)
 

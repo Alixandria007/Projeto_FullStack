@@ -17,8 +17,12 @@ class AluguelSerializerGet(serializers.ModelSerializer):
         fields = "__all__"
 
 class ItemAluguelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ItemAluguel
+        fields = "__all__"
+
+class ItemAluguelSerializerGet(serializers.ModelSerializer):
     filme = FilmesSerializer()
-    aluguel = AluguelSerializerGet()
 
     class Meta:
         model = models.ItemAluguel
