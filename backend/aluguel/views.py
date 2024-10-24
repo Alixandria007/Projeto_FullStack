@@ -33,10 +33,13 @@ def create_aluguel(request):
                                 "aluguel": aluguel.id
                             }
                     
+                    filme = models.Filme.objects.filter(id = i.get("id")).first()
+                    filme.quantidade = filme.quantidade - filme_data.get("quantidade")
 
                     serializer_filme = serializers.ItemAluguelSerializer(data=filme_data)
                     if serializer_filme.is_valid():
                         serializer_filme.save()
+                        filme.save()
                 return Response({"filme": serializer_filme.data, "aluguel": serializer_aluguel.data}, status=201)
             
             return Response({"filmes":serializer_filme.errors, "aluguel": serializer_aluguel.errors}, status=400)
@@ -80,6 +83,14 @@ def devolver_pedido(request, id):
         aluguel_serializer = serializers.AluguelSerializer(instance=aluguel, data = aluguel_data, partial = True)
 
         if aluguel_serializer.is_valid():
+            itens_aluguel = models.ItemAluguel.objects.filter(aluguel = aluguel.id)
+
+            for item in itens_aluguel:
+                filme = get_object_or_404(models.Filme, id = item.filme.id)
+                filme.quantidade += item.quantidade
+
+                filme.save()
+
             aluguel_serializer.save()
             return Response(aluguel_serializer.data, status=status.HTTP_200_OK)
         return Response("Erro ao atualizar o status de um aluguel!" , status=status.HTTP_400_BAD_REQUEST)

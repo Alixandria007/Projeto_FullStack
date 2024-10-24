@@ -10,9 +10,8 @@ from . import models,serializers
 
 @api_view(['GET', 'POST'])
 def filme_api(request):
-
     if request.method == 'GET':
-        filmes = models.Filme.objects.all()
+        filmes = models.Filme.objects.filter(quantidade__gt = 0)
         serializer = serializers.FilmesSerializer(instance = filmes, many = True)
         return Response(serializer.data)
     
@@ -68,4 +67,13 @@ def categoria_list(request):
 def autor_list(request):
     autor = models.Autor.objects.all()
     serializer = serializers.AutorSerializer(instance = autor, many = True)
+    return Response(serializer.data)
+
+@api_view(["GET"])
+def search_filmes(request):
+    search = request.GET.get("search")
+    filmes = models.Filme.objects.filter(titulo__icontains = search)
+
+    serializer = serializers.FilmesSerializer(instance = filmes, many = True)
+
     return Response(serializer.data)

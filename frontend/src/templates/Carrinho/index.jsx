@@ -62,7 +62,7 @@ export const Carrinho = () => {
                     data_aluguel: new Date().toISOString().slice(0, 10),
                     vencimento: dataDevolucaoFormatada,
                     status: 'P',
-                    filmes: carrinho.filmes
+                    filmes: carrinho.filmes,
                 }),
             });
     

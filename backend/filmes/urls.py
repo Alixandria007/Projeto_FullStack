@@ -8,4 +8,5 @@ urlpatterns = [
     path('detail/delete/<slug:slug>/',views.filme_delete),
     path('categoria/',views.categoria_list),
     path('autor/',views.autor_list),
+    path('search/',views.search_filmes),
 ]

@@ -5,7 +5,7 @@ import { GlobalContext } from '../../context/GlobalContext';
 import { carrinhoExists, SetMessages } from '../../context/GlobalContext/action';
 
 export const Detalhes = () => {
-    const quantidade = useRef()
+    const [quantidade, setQuantidade] = useState(1)
     const context = useContext(GlobalContext)
     const {GlobalDispatch} = context
     const [ filme, setFilme ] = useState(null);
@@ -118,12 +118,12 @@ export const Detalhes = () => {
                 
                 <div class="pb-4">
                     <label for="quantidade" class="form-label"><strong>Quantidade:</strong></label>
-                    <input ref={quantidade} type="number" min='1' value={'1'} max={filme.quantidade} class="form-quant form-control" id="quantidade" placeholder=""/>
+                    <input type="number" min='1' value={quantidade} onChange={(e) => setQuantidade(e.target.value)} max={filme.quantidade} class="form-quant form-control" id="quantidade" placeholder=""/>
                 </div>
 
                 <div className="d-flex gap-4">
                     <Link to={`/edit/${slug}`} type="button" className='btn btn-secondary'>Editar Filme</Link>
-                    <button onClick={() => Add_Carinho(filme, quantidade.current.value)} type="button" className='btn btn-primary'>Adicionar ao carrinho</button>
+                    <button onClick={() => Add_Carinho(filme, quantidade)} type="button" className='btn btn-primary'>Adicionar ao carrinho</button>
                 </div>
                
             </div>
