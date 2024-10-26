@@ -1,37 +1,31 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import './styles.css';
 import { useEffect } from 'react';
 
 export const Search = () => {
+    const navigate = useNavigate()
+    const location = useLocation();
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const searchFilmes = async (search) => {
-        const response = await fetch(`http://127.0.0.1:8000/filme/search?search=${search}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
+    const removeQueryParam = (param) => {
+        const searchParams = new URLSearchParams(location.search);
+        searchParams.delete(param);
+    
+        navigate({
+          pathname: location.pathname,
+          search: searchParams.toString(),
         });
-
-        if (response.ok) {
-            const data = await response.json();
-            console.log("Filmes encontrados:", data);
-        } else {
-            console.error("Erro ao buscar filmes");
-        }
-    };
-
-    useEffect(() => {
-        const searchTerm = searchParams.get('search');
-        if (searchTerm) {
-            searchFilmes(searchTerm);
-        }
-    }, [searchParams]);
+      };
 
     const handleSearch = (event) => {
         event.preventDefault();
         const search = event.target.querySelector("#search").value;
-        setSearchParams({ search: search });
+        if (search === ''){
+            removeQueryParam("search")
+        }
+        else{
+            setSearchParams({ search: search });
+        }
     };
 
     return (

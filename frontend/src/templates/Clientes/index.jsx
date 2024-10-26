@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from 'react'
 import { Tabela } from '../../components/Tabela'
 import './styles.css'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { SetMessages } from '../../context/GlobalContext/action'
 import { GlobalContext } from '../../context/GlobalContext'
 
 export const Clientes = () => {
     const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
     const [clientes, setClientes] = useState([])
     const context = useContext(GlobalContext)
     const {GlobalDispatch} = context
@@ -14,11 +15,14 @@ export const Clientes = () => {
     useEffect( () => {
         const ClientesApi = async () => {
             try{
-            const response = await fetch('http://127.0.0.1:8000/cliente')
+                const search = searchParams.get("search");
+                const url = search 
+                    ? `http://127.0.0.1:8000/cliente?search=${search}` 
+                    : 'http://127.0.0.1:8000/cliente';
+            const response = await fetch(url)
             const data = await response.json()
 
             setClientes(data)
-            console.log(clientes)
         }
 
             catch (error){
@@ -28,7 +32,7 @@ export const Clientes = () => {
 
         ClientesApi()
         
-    }, [])
+    }, [searchParams])
 
 
     const insertDonoCarrinho = (cliente) => {

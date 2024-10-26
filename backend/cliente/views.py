@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.db import transaction
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -11,7 +12,13 @@ from . import models, serializers
 def clientes(request):
 
     if request.method == 'GET':
-        clientes = models.Cliente.objects.all()
+        search = request.GET.get("search")
+        if search:
+            
+            clientes = models.Cliente.objects.filter(Q(usuario__first_name__icontains = search) | Q(usuario__last_name__icontains = search))
+        else:
+            clientes = models.Cliente.objects.all()
+
         serializer = serializers.ClienteSerializer(
             instance = clientes,
             many = True
