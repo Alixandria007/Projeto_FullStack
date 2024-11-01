@@ -12,6 +12,7 @@ import { EditarFilme } from '../../../templates/EditarFilme';
 import { ClientesDetalhes } from '../../../templates/ClientesDetalhes';
 import { EditarCliente } from '../../../templates/EditarCliente';
 import { DetalhesAluguel } from '../../../templates/DetalhesAluguel';
+import FilmesCategorias from '../../../templates/FilmesCategorias';
 
 export const Rotas = () => {
     return (
@@ -26,6 +27,7 @@ export const Rotas = () => {
           <Route path='/clientes/edit/:id' element={<EditarCliente/>}/>
           <Route path='/clientes/adicionar/' element={<AddClientes/>}/>
           <Route path='/categorias' element={<Categorias/>}/>
+          <Route path='/categorias/:id/filmes' element={<FilmesCategorias/>}/>
           <Route path='/alugueis' element={<Alugueis/>}/>
           <Route path='/alugueis/detalhes/:id' element={<DetalhesAluguel/>}/>
           <Route path='/alugueis/atrasos' element={<AlugueisAtrasos/>}/>

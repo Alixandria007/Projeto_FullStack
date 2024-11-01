@@ -1,51 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const Pagination = ({ data, itemsPerPage }) => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = Math.ceil(data.length / itemsPerPage); 
+const Pagination = ({ data, itemsPerPage, currentPage, onPageChange }) => {
+    const totalPages = Math.ceil(data.length / itemsPerPage);
 
-    const currentData = data.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-    );
-
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
-
+    if (data.length < itemsPerPage){
+        return 
+    }
     return (
-        <div>
-            <ul>
-                {currentData.map((item, index) => (
-                    <li key={index}>{item}</li>
-                ))}
-            </ul>
+        <div className="pagination">
+            <button
+                onClick={() => onPageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="btn btn-secondary"
+            >
+                Anterior
+            </button>
 
-            <div className="pagination">
+            {[...Array(totalPages)].map((_, index) => (
                 <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
+                    key={index}
+                    onClick={() => onPageChange(index + 1)}
+                    className={`btn btn-secondary ${currentPage === index + 1 ? 'active' : ''}`}
                 >
-                    Anterior
+                    {index + 1}
                 </button>
+            ))}
 
-                {[...Array(totalPages)].map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => handlePageChange(index + 1)}
-                        className={currentPage === index + 1 ? 'active' : ''}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
-
-                <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                >
-                    Próximo
-                </button>
-            </div>
+            <button
+                onClick={() => onPageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="btn btn-secondary"
+            >
+                Próximo
+            </button>
         </div>
     );
 };

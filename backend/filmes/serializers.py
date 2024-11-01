@@ -3,9 +3,15 @@ from django.utils.text import slugify
 from . import models
 
 class CategoriaSerializer(serializers.ModelSerializer):
+    quantidadeDeFilmes = serializers.SerializerMethodField()
     class Meta:
         model = models.Categoria
         fields = "__all__"
+
+    def get_quantidadeDeFilmes(self, obj):
+        quantidade = models.Filme.objects.filter(categoria = obj.id).count()
+
+        return quantidade
 
 class AutorSerializer(serializers.ModelSerializer):
     class Meta:

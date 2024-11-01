@@ -1,3 +1,11 @@
 .link{
     text-decoration: none;
 }
+
+.bi-check-circle-fill{
+    color: green;
+}
+
+.bi{
+    font-size: 1.2rem;
+}

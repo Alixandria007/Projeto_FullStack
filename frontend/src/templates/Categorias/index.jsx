@@ -32,16 +32,16 @@ export const Categorias = () => {
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
-                    <th>Ação</th>
+                    <th>Quantidade de Filmes</th>
                 </tr>
             }
 
             tbody={
                 categorias.map((categoria) => (
                     <tr>
-                        <td><Link className='link'>{categoria.id}</Link></td>
-                        <td><Link className='link'>{categoria.nome}</Link></td>
-                        <td><button className='btn btn-primary btn-sm'>Selecionar</button></td>
+                        <td><Link to={`/categorias/${categoria.id}/filmes`} className='link'>{categoria.id}</Link></td>
+                        <td><Link to={`/categorias/${categoria.id}/filmes`} className='link'>{categoria.nome}</Link></td>
+                        <td>{categoria.quantidadeDeFilmes}</td>
                     </tr>
                 ))
                 }
